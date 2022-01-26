@@ -30,7 +30,7 @@ namespace StudentTesterTest
                 ////Controle prop testen
                 double starttop = 66.68;
                 tester.TestPropGetSet(priceProp, starttop, starttop); //gewone get/set test
-                tester.TestPropGetSet(priceProp, -1, starttop); //negatief getal zou terug starttop moeten geven
+                tester.TestPropGetSet(priceProp, -1.0, starttop); //negatief getal zou terug starttop moeten geven
 
 
                 // backing field eens controleren
