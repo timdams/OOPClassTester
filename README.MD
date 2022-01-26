@@ -6,6 +6,24 @@ The OOPClassBasicsTesterLibrary contains a ...library (!) to use wile writing un
 
 (Again, I'm pretty sure things like Roslyn will also do this)
 
+
+
+# Usage:
+
+1. Add the OOPClassBacisTesterLibrary (dll) to your unit test project
+2. Make sure an empty class with the correct name already exists in the project to test 
+3. In your Unit test class make sure to create the analyzer and give it an instant of the class to test (static classes/methods cant be tested...yet ) 
+``TimsEpicClassAnalyzer tester = new TimsEpicClassAnalyzer(new StudentClassToMake());``
+4. Start creating tests 
+
+## Current existing checks
+
+* **CheckFullProperty**
+* **CheckAutoProperty**
+* **TestPropGetSet**: test if the get and set work by checking of the expected value is return from the get after setting it.
+* **TestBackingFieldProp**: test if a backing field of a given name receives the correct information from a given property
+
+
 # Why does this exist?
 
 We use this in our basic object oriented programming classes C# (at the AP University Collega, informatics bachelor degree). In the first labs, student need to learn to write classes that adhere to some basic requirements (correct properties, naming, etc). This library allows the lecture to write unit tests the student can then run to check if his class meets the minimal requirements.
@@ -14,7 +32,7 @@ Imagine the student needs to write a class with the following requirements:
 
 ## Example 1:Full property
 
-* It has a full property called ``Diameter´´ (type ``int``) with a backingfield called ``diameter``. (if the backing field has the same name as the full property, but starts with small char, no additional info needs to be passed to the method).
+* It has a full property called ``Diameter`` (type ``int``) with a backingfield called ``diameter``. (if the backing field has the same name as the full property, but starts with small char, no additional info needs to be passed to the method).
 * It has a full property called ``Toppings`` (type ``string``) and it uses a backingfield called ``tops``.
 
 
@@ -23,7 +41,7 @@ tester.CheckFullProperty("Diameter", typeof(int));
 tester.CheckFullProperty("Toppings", typeof(string),"tops");
 
 //Test of the backing field gets its value from the property (second parameter)
-tester.TestBackingFieldProp("Toppings, "tops", "pineapple", "pineapple"); 
+tester.TestBackingFieldProp("Toppings, "tops", "pineapple", "pineapple");
 ```
 
 ## Example 2: Autoproperty
@@ -50,19 +68,5 @@ if(tester.CheckFullProperty(priceProp, typeof(double)))
     
     //if we try to set a negative number, we expect the previous value (startop) to be returned after calling the get
     tester.TestPropGetSet(priceProp, -1.0, starttop); 
+}
 ```
-
-# Usage:
-
-1. Add the OOPClassBacisTesterLibrary (dll) to your unit test project
-2. Make sure an empty class with the correct name already exists in the project to test 
-3. In your Unit test class make sure to create the analyzer and give it an instant of the class to test (static classes/methods cant be tested...yet ) 
-``TimsEpicClassAnalyzer tester = new TimsEpicClassAnalyzer(new StudentClassToMake());``
-4. Start creating tests 
-
-Current methods:
-
-* **CheckFullProperty**
-* **CheckAutoProperty**
-* **TestPropGetSet**: test if the get and set work by checking of the expected value is return from the get after setting it.
-* **TestBackingFieldProp**: test if a backing field of a given name receives the correct information from a given property
