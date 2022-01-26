@@ -2,10 +2,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OOPClassBasicsTesterLibrary;
 using StudentlikeConsoleOplossing;
 using System;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.CompilerServices;
 
 namespace StudentTesterTest
 {
@@ -20,12 +16,12 @@ namespace StudentTesterTest
         [TestMethod, Description("Controleert of nodige properties aanwezig zijn en werken")]
         public void PropTest()
         {
-            
-            tester.CheckFullProperty("Toppings", typeof(string),"topje");
+
+            tester.CheckFullProperty("Toppings", typeof(string), "topje");
             tester.CheckAutoProperty("IsPizza", typeof(bool));
-            
+
             string priceProp = "Price";
-            if(tester.CheckFullProperty(priceProp, typeof(double)))
+            if (tester.CheckFullProperty(priceProp, typeof(double)))
             {
                 ////Controle prop testen
                 double starttop = 66.68;
@@ -38,70 +34,49 @@ namespace StudentTesterTest
             }
 
 
-            //if (hasProp)
-            //{
-
-            //    //TODO ZOVEEL HERHALING...HET IS BESCHAMEND
-            //    double starttop = 66.68;
-            //    r.GetType().GetProperty("Price").SetValue(r, starttop);
-            //    var propwaarde = r.GetType().GetProperty("Price").GetValue(r);
-            //    Assert.AreEqual(propwaarde, starttop, "Get van Price geeft niet de waarde terug die met de Set werd ingesteld");
-            //    r.GetType().GetProperty("Price").SetValue(r, -2.5);
-            //    Assert.AreEqual(r.GetType().GetProperty("Price").GetValue(r), starttop, "Een negatieve waarde als price geven geeft niet gewenste resultaat");
-            //}
-
-
-
         }
 
-
-        private void GraadTest(int graad, string text)
+        [TestMethod, Description("Controleert of nodige methoden aanwezig zijn en werken")]
+        public void MethodTest()
         {
-            using (var sw = new StringWriter())
+
+            if (tester.CheckMethod("Bereken", typeof(int), new Type[] { typeof(int), typeof(string) }))
             {
-                Console.SetOut(sw);
-                var r = new StudentlikeConsoleOplossing.StudentClassToMake();
-                if (r.GetType().GetProperty("Percentage") != null)
-                {
-                    var p = r.GetType().GetProperty("Percentage");
-                    p.SetValue(r, graad);
-                    if (r.GetType().GetMethod("PrintGraad") != null)
-                    {
-                        var l = r.GetType().GetMethod("PrintGraad");
-                        l.Invoke(r, null);
-                        var result = sw.ToString().Trim();
-                        Assert.AreEqual(text, result, $"{graad} zou {text} moeten geven maar ik kreeg {text}");
-                    }
-                    else
-                    {
-                        Assert.Fail("Geen methode PrintGraad gevonden");
-                    }
+                var arguments = new object[] { 3 , "test" };
+                tester.TestMethod("Bereken", arguments, 3);
 
-                }
-                else
-                {
-                    Assert.Fail("Geen autoproperty Percentage gevonden");
-                }
+                //using (var sw = new StringWriter())
+                //{
+                //    Console.SetOut(sw);
+                //    var r = new StudentlikeConsoleOplossing.StudentClassToMake();
+                //    if (r.GetType().GetProperty("Percentage") != null)
+                //    {
+                //        var p = r.GetType().GetProperty("Percentage");
+                //        p.SetValue(r, graad);
+                //        if (r.GetType().GetMethod("PrintGraad") != null)
+                //        {
+                //            var l = r.GetType().GetMethod("PrintGraad");
+                //            l.Invoke(r, null);
+                //            var result = sw.ToString().Trim();
+                //            Assert.AreEqual(text, result, $"{graad} zou {text} moeten geven maar ik kreeg {text}");
+                //        }
+                //        else
+                //        {
+                //            Assert.Fail("Geen methode PrintGraad gevonden");
+                //        }
+
+                //    }
+                //    else
+                //    {
+                //        Assert.Fail("Geen autoproperty Percentage gevonden");
+                //    }
+                //}
             }
+
+
+
+
+
         }
-
-
-        [TestMethod]
-        public void PrintGraadTest()
-        {
-            GraadTest(10, "Niet geslaagd");
-            GraadTest(40, "Niet geslaagd");
-            GraadTest(50, "Voldoende");
-            GraadTest(65, "Voldoende");
-            GraadTest(68, "Voldoende");
-            GraadTest(69, "Onderscheiding");
-            GraadTest(75, "Onderscheiding");
-            GraadTest(76, "Grote onderscheiding");
-            GraadTest(85, "Grote onderscheiding");
-            GraadTest(86, "Grootste onderscheiding");
-        }
-
-
-  
     }
 }

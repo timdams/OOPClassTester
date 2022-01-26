@@ -30,5 +30,10 @@ namespace StudentlikeConsoleOplossing
             }
         }
 
+        public int Bereken(int test, string second)
+        {
+            return test;
+        }
+
     }
 }

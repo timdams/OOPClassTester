@@ -23,6 +23,8 @@ The OOPClassBasicsTesterLibrary contains a ...library (!) to use wile writing un
 * **TestPropGetSet**: test if the get and set work by checking of the expected value is return from the get after setting it.
 * **TestBackingFieldProp**: test if a backing field of a given name receives the correct information from a given property
 
+* **CheckMethod**: Check if the method is compliant to the basic requirements (name, returntype, parameters)
+* **TestMethod**: test if the method (optional: given a certain set of parameters) return the expected result.
 
 # Why does this exist?
 
@@ -52,10 +54,10 @@ tester.TestBackingFieldProp("Toppings, "tops", "pineapple", "pineapple");
 tester.CheckAutoProperty("IsPizza", typeof(bool));
 ```
 
-## Example 3 : full property with check in setter
+## Example 3 : Full property with check in setter
 
-* It has a full property called Price, with a backing field price. Type = double
-* Only positive value can be set. If a negative value is set, nothing happens and the backing field retains its current value.
+* It has a full property called ``Price``, with a backing field ``price``. Type = ``double``.
+* Only positive value can be set. If a negative value is set, nothing happens and the property retains its current value.
 
 ```cs
 string priceProp = "Price";
@@ -68,5 +70,18 @@ if(tester.CheckFullProperty(priceProp, typeof(double)))
     
     //if we try to set a negative number, we expect the previous value (startop) to be returned after calling the get
     tester.TestPropGetSet(priceProp, -1.0, starttop); 
+}
+```
+
+## Example 4: Methods
+
+* The class has a method called ``Compute`` that should return an ``int`` and expects two paramers of type ``int`` and ``string``.
+* Running the method with parameters ``3`` and ``hello`` should return the value ``5``.
+
+```cs
+if (tester.CheckMethod("Compute", typeof(int), new Type[] { typeof(int), typeof(string) }))
+{
+    var arguments = new object[] { 3 , "hello" };
+    tester.TestMethod("Compute", arguments, 5);
 }
 ```

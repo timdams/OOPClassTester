@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -25,6 +26,72 @@ namespace OOPClassBasicsTesterLibrary
         public bool CheckAutoProperty(string propName, Type returnType)
         {
             return CheckProperty(propName, returnType, true);
+        }
+
+        public bool CheckMethod(string methodName, Type returntype, Type[] args = null)
+        {
+            bool methodExist = classToTest.GetType().GetMethod(methodName) != null;
+            Assert.AreEqual(true, methodExist, $"Geen methode {methodName} gevonden");
+            if (!methodExist)
+                return false;
+
+            var propType = classToTest.GetType().GetMethod(methodName).ReturnType;
+            Assert.AreEqual(returntype, propType, $"Methode {methodName} niet het verwachte returntype ({returntype.Name})");
+            
+            var m = classToTest.GetType().GetMethod(methodName);
+            var argInMethod = m.GetParameters();
+            if (args == null && argInMethod?.Length != 0)
+            {
+                Assert.Fail($"De methode {methodName} mag geen parameters volgens de opgave hebben. Maar in de klasse staat dat ze er {argInMethod.Length} vereist.");
+            }
+            else if (args!=null)
+            {
+                if(argInMethod==null)
+                {
+                    Assert.Fail($"De methode {methodName} verwacht geen parameters. Maar volgens de opgave vereist de methode er {args.Length}.");
+                    return false;
+                }
+                else
+                {
+                    if(argInMethod.Length != args.Length)
+                    {
+                        Assert.Fail($"Aantal parameters volgens opgave  ({args.Length}) komt niet overeen met aantal in klasse effectief  ({argInMethod.Length}).");
+                    }
+                    //argumenten verwerken en testen
+                    for (int i = 0; i < argInMethod.Length; i++)
+                    {
+                        Assert.AreEqual(argInMethod[i].ParameterType, args[i], $"Bij de methode {methodName} verwachtte ik bij parameter {i + 1} het type {args[i]} maar kreeg {argInMethod[i].ParameterType}");
+                    }
+                }
+            }
+            else
+            {
+                
+            }
+
+            return true;
+
+        }
+
+
+        public void TestMethod(string methodName, object[] args, object expectedValue =null)
+        {
+            //TODO wat als methode void returntype heeft én gewoon dingen in klasse doet of naar scherm stuurt? Niet te doen vrees ik :D
+            var methodToTest = classToTest.GetType().GetMethod(methodName);
+            var result = methodToTest.Invoke(classToTest, args);
+            Assert.AreEqual(expectedValue, result, $"{methodName} aanroepen met volgende parameters ({printObjects(args)}) gaf {result} i.p.v. {expectedValue}");
+   
+        }
+
+        private string printObjects(object[] args)
+        {
+            string res = "";
+            foreach (var arg in args)
+            {
+                res += arg + ",";
+            }
+            
+            return res.Substring(0,res.Length-2);
         }
 
         public void TestBackingFieldProp(string propName, string backfieldName,object valueToSet, object ValueExpected)
@@ -78,6 +145,7 @@ namespace OOPClassBasicsTesterLibrary
 
             return true;
         }
+
 
 
         // Bron: https://stackoverflow.com/questions/2210309/how-to-find-out-if-a-property-is-an-auto-implemented-property-with-reflection
