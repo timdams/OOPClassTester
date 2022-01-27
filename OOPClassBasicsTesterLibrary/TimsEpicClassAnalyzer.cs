@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -74,24 +75,39 @@ namespace OOPClassBasicsTesterLibrary
         }
 
 
-        public void TestMethod(string methodName, object[] args, object expectedValue =null)
+        public string TestMethod(string methodName, object[] args, object expectedValue =null, string extraInfo="")
         {
-            //TODO wat als methode void returntype heeft én gewoon dingen in klasse doet of naar scherm stuurt? Niet te doen vrees ik :D
-            var methodToTest = classToTest.GetType().GetMethod(methodName);
-            var result = methodToTest.Invoke(classToTest, args);
-            Assert.AreEqual(expectedValue, result, $"{methodName} aanroepen met volgende parameters ({printObjects(args)}) gaf {result} i.p.v. {expectedValue}");
+            using (var sw = new StringWriter())
+            {
+                Console.SetOut(sw);
+
+                var methodToTest = classToTest.GetType().GetMethod(methodName);
+                var result = methodToTest.Invoke(classToTest, args);
+                string info = $"{methodName} aanroepen ";
+                if (args != null)
+                    info += "met volgende parameters({ printObjects(args)})";
+                info += $" gaf {result} i.p.v. {expectedValue}. {extraInfo}";
+                Assert.AreEqual(expectedValue, result, info);
+
+                return sw.ToString().Trim();
+            }
    
         }
 
         private string printObjects(object[] args)
         {
-            string res = "";
-            foreach (var arg in args)
-            {
-                res += arg + ",";
-            }
             
-            return res.Substring(0,res.Length-2);
+            if (args!=null)
+            {
+                string res = "";
+                foreach (var arg in args)
+                {
+                    res += arg + ",";
+                }
+                return res.Substring(0, res.Length - 2);
+            }
+            return "";
+           
         }
 
         public void TestBackingFieldProp(string propName, string backfieldName,object valueToSet, object ValueExpected)
@@ -109,12 +125,12 @@ namespace OOPClassBasicsTesterLibrary
             Assert.AreEqual(valueExpected, result, $"{propName} property getter/setter (doe je de nodige controles in de setter?) ");
 
         }
-        private object GetProp(string propName)
+        public object GetProp(string propName)
         {
             return classToTest.GetType().GetProperty(propName).GetValue(classToTest);
            
         }
-        private void SetProp(string propName, object valueToSet)
+        public void SetProp(string propName, object valueToSet)
         {
             classToTest.GetType().GetProperty(propName).SetValue(classToTest, valueToSet);
         }

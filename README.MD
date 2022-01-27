@@ -42,7 +42,7 @@ Imagine the student needs to write a class with the following requirements:
 tester.CheckFullProperty("Diameter", typeof(int));
 tester.CheckFullProperty("Toppings", typeof(string),"tops");
 
-//Test of the backing field gets its value from the property (second parameter)
+//Test if the backing field gets its value from the property (second parameter)
 tester.TestBackingFieldProp("Toppings, "tops", "pineapple", "pineapple");
 ```
 
@@ -77,11 +77,13 @@ if(tester.CheckFullProperty(priceProp, typeof(double)))
 
 * The class has a method called ``Compute`` that should return an ``int`` and expects two paramers of type ``int`` and ``string``.
 * Running the method with parameters ``3`` and ``hello`` should return the value ``5``.
+* The method should print the second parameter to the console.
 
 ```cs
 if (tester.CheckMethod("Compute", typeof(int), new Type[] { typeof(int), typeof(string) }))
 {
     var arguments = new object[] { 3 , "hello" };
-    tester.TestMethod("Compute", arguments, 5);
+    string consoleOutput = tester.TestMethod("Compute", arguments, 5);
+    Assert.AreEquals("hello",consoleOutput);
 }
 ```

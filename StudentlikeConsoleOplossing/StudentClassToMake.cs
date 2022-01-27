@@ -32,6 +32,7 @@ namespace StudentlikeConsoleOplossing
 
         public int Bereken(int test, string second)
         {
+            Console.WriteLine($"second is gelijk aan {second}");
             return test;
         }
 
