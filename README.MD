@@ -10,7 +10,7 @@ The OOPClassBasicsTesterLibrary contains a ...library (!) to use wile writing un
 
 # Usage:
 
-1. Add the OOPClassBacisTesterLibrary (dll) to your unit test project
+1. Add the OOPClassBacisTesterLibrary (nuget) to your unit test project: see  [https://www.nuget.org/packages/OOPClassBasicsTesterLibrary/](https://www.nuget.org/packages/OOPClassBasicsTesterLibrary/)
 2. Make sure an empty class with the correct name already exists in the project to test 
 3. In your Unit test class make sure to create the analyzer and give it an instant of the class to test (static classes/methods cant be tested...yet ) 
 ``TimsEpicClassAnalyzer tester = new TimsEpicClassAnalyzer(new StudentClassToMake());``

@@ -2,6 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <Company>Tim Dams</Company>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>Tim Dams</Authors>
+    <Description>The OOPClassBasicsTesterLibrary contains a ...library (!) to use while writing unit tests to check for basic class making skills. For example, it allows you to check if the user created the correct properties and following the correct naming, returntype, and whether the get/set combo works as expected.</Description>
+    <PackageProjectUrl>https://github.com/timdams/OOPClassTester</PackageProjectUrl>
   </PropertyGroup>
 
   <ItemGroup>
